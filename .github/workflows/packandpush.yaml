@@ -45,20 +45,11 @@ jobs:
         variables: |
           image_deploy_tag=sha-${{ steps.vars.outputs.sha_short }}
 
-    - name: Set up Git user
+    - name: Commit and push updated manifest
       run: |
-        git config --local user.email "${{ secrets.GIT_USER_EMAIL }}"
-        git config --local user.name "${{ secrets.GIT_USER_NAME }}"
-
-    - name: Commit deploy manifest
-      run: |
-        git add .
-        git commit -m "[skip ci] Generate deployment manifests" || echo "No changes to commit"
-
-    - name: Set correct Git remote
-      run: |
+        git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"
+        git config --global user.name "${{ secrets.GIT_USER_NAME }}"
+        git add demo/hello.yaml
+        git commit -m "[skip ci] Update deployment manifest for image tag sha-${{ steps.vars.outputs.sha_short }}" || echo "No changes to commit"
         git remote set-url origin https://x-access-token:${{ secrets.AUTO_COMMIT_TOKEN }}@github.com/${{ github.repository }}.git
-
-    - name: Push deploy manifests to local repo
-      run: |
         git push origin main

@@ -10,6 +10,9 @@ jobs:
     name: Package, Publish, and Register
     runs-on: ubuntu-latest
 
+    outputs:
+      sha_short: ${{ steps.vars.outputs.sha_short }}    
+      
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -51,7 +54,7 @@ jobs:
         output_file: demo/hello.yaml
         strict: true
         variables: |
-          image_deploy_tag=sha-${{ steps.vars.outputs.sha_short }}
+          image_deploy_tag=sha-${{ needs.register.outputs.sha_short }}
 
     - name: Commit and push generated manifest
       run: |

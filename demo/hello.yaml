@@ -14,7 +14,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: navyaa14/cnb:sha-15434503460
+        image: navyaa14/cnb:sha-
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
